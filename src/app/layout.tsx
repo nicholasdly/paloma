@@ -43,7 +43,7 @@ export default function RootLayout({
           ibmPlexSans.variable,
           ibmPlexMono.variable,
           ibmPlexSerif.variable,
-          "font-sans antialiased",
+          "overscroll-x-none font-sans antialiased",
         )}
       >
         {children}
