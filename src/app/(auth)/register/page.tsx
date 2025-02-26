@@ -12,7 +12,7 @@ export default async function Page() {
     <main className="mx-auto flex h-dvh max-w-sm items-center p-4">
       <div className="flex w-full flex-col gap-8">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-nowrap text-xl font-semibold">
+          <h1 className="text-nowrap font-serif text-xl font-semibold text-primary">
             Create an account
           </h1>
           <p className="text-pretty text-center text-sm text-muted-foreground">

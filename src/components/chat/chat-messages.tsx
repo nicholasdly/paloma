@@ -23,7 +23,7 @@ export default function ChatMessages({
 
 function UserMessage({ message }: { message: Message }) {
   return (
-    <article className="ml-auto max-w-[90%] rounded border bg-muted px-3 py-2 focus-visible:outline-none focus-visible:ring-0">
+    <article className="ml-auto max-w-[90%] rounded border bg-muted/60 px-3 py-2">
       <p>{message.content}</p>
     </article>
   );
