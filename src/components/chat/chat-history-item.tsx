@@ -12,13 +12,11 @@ export default function ChatItem({ chat }: { chat: Chat }) {
   return (
     <SidebarMenuItem>
       {pathname === `/chat/${chat.id}` ? (
-        <SidebarMenuButton className="bg-muted">
-          <span className="overflow-y-none text-ellipsis font-medium">
-            {chat.title}
-          </span>
+        <SidebarMenuButton className="border bg-muted/60">
+          <span>{chat.title}</span>
         </SidebarMenuButton>
       ) : (
-        <SidebarMenuButton asChild>
+        <SidebarMenuButton className="border border-transparent" asChild>
           <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
             <span>{chat.title}</span>
           </Link>

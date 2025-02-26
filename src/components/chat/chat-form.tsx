@@ -52,7 +52,7 @@ export default function ChatForm({
       <div className="relative w-full">
         <Textarea
           ref={textareaRef}
-          className="resize-none bg-muted pb-10"
+          className="resize-none pb-10"
           autoFocus
           value={input}
           onChange={onChange}
@@ -66,7 +66,7 @@ export default function ChatForm({
           type="submit"
           size="icon"
           variant="outline"
-          className="absolute bottom-0 right-0 z-10 m-2 size-[30px]"
+          className="absolute bottom-0 right-0 z-10 m-2 size-[30px] bg-background"
           disabled={!input}
         >
           <SendIcon />
