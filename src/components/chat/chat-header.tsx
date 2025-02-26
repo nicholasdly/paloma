@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { User } from "@/db/schema";
+import { getCurrentSession } from "@/lib/auth/sessions";
 import { Button } from "../ui/button";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
-export default function ChatHeader({ user }: { user: User | null }) {
+export default async function ChatHeader() {
+  const { user } = await getCurrentSession();
+
   return (
     <header className="sticky top-0 flex items-center justify-between border-b bg-background p-1.5 md:px-2">
       <Tooltip>

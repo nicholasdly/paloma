@@ -1,3 +1,4 @@
+import { Message } from "ai";
 import { InferSelectModel } from "drizzle-orm";
 import { pgTable } from "drizzle-orm/pg-core";
 
@@ -21,3 +22,16 @@ export const sessions = pgTable("sessions", (t) => ({
 }));
 
 export type Session = InferSelectModel<typeof sessions>;
+
+export const chats = pgTable("chats", (t) => ({
+  id: t.uuid().primaryKey().defaultRandom(),
+  userId: t
+    .uuid()
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+  title: t.text().notNull(),
+  messages: t.jsonb().notNull().$type<Message[]>(),
+  createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),
+}));
+
+export type Chat = InferSelectModel<typeof chats>;

@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import ChatHistory from "./chat-history";
 
 export async function ChatSidebar() {
   const { user } = await getCurrentSession();
@@ -44,7 +45,11 @@ export async function ChatSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {!user && (
+        {user ? (
+          <SidebarGroup>
+            <ChatHistory user={user} />
+          </SidebarGroup>
+        ) : (
           <SidebarGroup>
             <SidebarGroupContent className="px-2">
               <p className="text-sm text-muted-foreground">

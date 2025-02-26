@@ -1,17 +1,22 @@
 import { SendIcon } from "lucide-react";
 import { useRef } from "react";
+import { User } from "@/db/schema";
 import { UseChatHelpers } from "@ai-sdk/react";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
 export default function ChatForm({
+  id,
   input,
   handleInputChange,
   handleSubmit,
+  user,
 }: {
+  id: UseChatHelpers["id"];
   input: UseChatHelpers["input"];
   handleInputChange: UseChatHelpers["handleInputChange"];
   handleSubmit: UseChatHelpers["handleSubmit"];
+  user: User | null;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -34,6 +39,9 @@ export default function ChatForm({
   const onSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     handleSubmit(event);
     resetInput();
+
+    textareaRef.current?.focus();
+    if (user) history.replaceState(null, "", `/chat/${id}`);
   };
 
   return (
@@ -45,6 +53,7 @@ export default function ChatForm({
         <Textarea
           ref={textareaRef}
           className="resize-none bg-muted pb-10"
+          autoFocus
           value={input}
           onChange={onChange}
           onKeyDown={(event) => {
@@ -58,6 +67,7 @@ export default function ChatForm({
           size="icon"
           variant="outline"
           className="absolute bottom-0 right-0 z-10 m-2 size-[30px]"
+          disabled={!input}
         >
           <SendIcon />
         </Button>

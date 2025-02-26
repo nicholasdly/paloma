@@ -1,3 +1,4 @@
+import ChatHeader from "@/components/chat/chat-header";
 import { ChatSidebar } from "@/components/chat/chat-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 
@@ -7,7 +8,10 @@ export default function Layout({
   return (
     <SidebarProvider>
       <ChatSidebar />
-      <main className="w-full">{children}</main>
+      <div className="flex h-svh w-full flex-col">
+        <ChatHeader />
+        {children}
+      </div>
     </SidebarProvider>
   );
 }
