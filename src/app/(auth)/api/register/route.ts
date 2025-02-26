@@ -1,6 +1,4 @@
-import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { users } from "@/db/schema";
+import { createUser, getUser } from "@/db/queries";
 import { hashPassword } from "@/lib/auth/passwords";
 import { registerFormSchema } from "@/lib/auth/schemas";
 import {
@@ -21,25 +19,17 @@ export async function POST(request: Request) {
   if (!success) return new Response(null, { status: 400 });
 
   const { email, password } = data;
-
-  const [existingUser] = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  const existingUser = await getUser({ email });
 
   if (existingUser?.email === email) return new Response(null, { status: 409 });
 
   const passwordHash = await hashPassword(password);
-  const [user] = await db
-    .insert(users)
-    .values({ email, passwordHash })
-    .returning();
+  const user = await createUser({ email, passwordHash });
 
   // TODO: Implement 2FA
 
   const sessionToken = generateSessionToken();
-  const session = await createSession(sessionToken, user!.id);
+  const session = await createSession(sessionToken, user.id);
   await setSessionTokenCookie(sessionToken, session.expiresAt);
 
   return new Response(null, { status: 200 });

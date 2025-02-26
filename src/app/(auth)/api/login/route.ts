@@ -1,6 +1,4 @@
-import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { users } from "@/db/schema";
+import { getUser } from "@/db/queries";
 import { verifyPassword } from "@/lib/auth/passwords";
 import { loginFormSchema } from "@/lib/auth/schemas";
 import {
@@ -22,12 +20,7 @@ export async function POST(request: Request) {
   if (!success) return new Response(null, { status: 400 });
 
   const { email, password } = data;
-
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.email, email))
-    .limit(1);
+  const user = await getUser({ email });
 
   // Avoid returning at early here to prevent malicious actors from easily
   // discovering genuine usernames via error message or response time.
