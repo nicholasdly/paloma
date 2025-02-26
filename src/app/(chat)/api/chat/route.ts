@@ -1,7 +1,5 @@
 import { Message, appendResponseMessages, generateText, streamText } from "ai";
-import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { chats } from "@/db/schema";
+import { createChat, getChat, updateChat } from "@/db/queries";
 import { generateTitlePrompt } from "@/lib/ai/prompts";
 import { getCurrentSession } from "@/lib/auth/sessions";
 import { openai } from "@ai-sdk/openai";
@@ -15,7 +13,7 @@ async function generateTitle({ message }: { message: Message }) {
   return title;
 }
 
-async function getChat({
+async function saveChat({
   id,
   userId,
   messages,
@@ -24,7 +22,7 @@ async function getChat({
   userId: string;
   messages: Message[];
 }) {
-  const [existingChat] = await db.select().from(chats).where(eq(chats.id, id));
+  const existingChat = await getChat({ id, userId });
   if (existingChat) return existingChat;
 
   if (messages.length === 0 || messages.at(-1)?.role !== "user") {
@@ -32,17 +30,9 @@ async function getChat({
   }
 
   const title = await generateTitle({ message: messages.at(-1)! });
-  const [chat] = await db
-    .insert(chats)
-    .values({
-      id,
-      userId,
-      title,
-      messages,
-    })
-    .returning();
+  const chat = await createChat({ id, userId, title, messages });
 
-  return chat!;
+  return chat;
 }
 
 export async function POST(req: Request) {
@@ -67,24 +57,19 @@ export async function POST(req: Request) {
     return result.toDataStreamResponse();
   }
 
-  const chatPromise = getChat({ id, userId: user.id, messages });
+  const chatPromise = saveChat({ id, userId: user.id, messages });
 
   const result = streamText({
     model: openai("gpt-4o-mini"),
     messages,
     async onFinish({ response }) {
+      const chat = await chatPromise;
       const conversation = appendResponseMessages({
         messages,
         responseMessages: response.messages,
       });
-      const chat = await chatPromise;
 
-      await db
-        .update(chats)
-        .set({
-          messages: conversation,
-        })
-        .where(eq(chats.id, chat.id));
+      await updateChat({ id: chat.id, messages: conversation });
     },
   });
 

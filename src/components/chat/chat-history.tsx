@@ -1,23 +1,10 @@
-import { and, desc, eq, gt } from "drizzle-orm";
-import { db } from "@/db";
-import { User, chats } from "@/db/schema";
+import { getHistory } from "@/db/queries";
+import { User } from "@/db/schema";
 import { SidebarGroup, SidebarGroupContent, SidebarMenu } from "../ui/sidebar";
 import ChatHistoryItem from "./chat-history-item";
 
-const month = 1000 * 60 * 60 * 24 * 30; // 30 days
-
 export default async function ChatHistory({ user }: { user: User }) {
-  const history = await db
-    .select()
-    .from(chats)
-    .where(
-      and(
-        eq(chats.userId, user.id),
-        gt(chats.createdAt, new Date(new Date().getTime() - month)),
-      ),
-    )
-    .orderBy(desc(chats.createdAt))
-    .limit(100);
+  const history = await getHistory({ userId: user.id });
 
   if (history.length === 0) {
     return (
