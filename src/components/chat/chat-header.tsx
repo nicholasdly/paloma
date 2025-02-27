@@ -23,6 +23,7 @@ export default async function ChatHeader() {
             <Button variant="outline" size="icon" asChild>
               <Link href="/">
                 <PlusIcon />
+                <span className="sr-only">New Chat</span>
               </Link>
             </Button>
           </TooltipTrigger>

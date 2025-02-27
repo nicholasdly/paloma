@@ -1,4 +1,4 @@
-import { ChevronUp } from "lucide-react";
+import { ChevronUpIcon } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { getCurrentSession } from "@/lib/auth/sessions";
+import HelpButton from "../custom/help-button";
 import LogoutButton from "../custom/logout-button";
 import {
   DropdownMenu,
@@ -26,9 +27,12 @@ export async function ChatSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b">
-        <h1 className="inline-flex h-8 items-center px-2 font-serif text-2xl font-medium text-primary">
-          Paloma
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="ml-2 font-serif text-2xl font-medium text-primary">
+            Paloma
+          </h1>
+          <HelpButton />
+        </div>
       </SidebarHeader>
 
       <SidebarContent className="overscroll-contain">
@@ -53,7 +57,7 @@ export async function ChatSidebar() {
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuButton className="font-medium text-primary">
                     <span className="truncate font-serif">{user.email}</span>
-                    <ChevronUp className="ml-auto" />
+                    <ChevronUpIcon className="ml-auto" />
                   </SidebarMenuButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
