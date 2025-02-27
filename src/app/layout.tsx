@@ -51,7 +51,7 @@ export default function RootLayout({
         {children}
         <Toaster
           theme="light"
-          position="bottom-center"
+          position="top-center"
           toastOptions={{ className: "font-sans !rounded" }}
           richColors
         />
