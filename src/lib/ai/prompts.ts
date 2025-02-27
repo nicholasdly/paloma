@@ -1,6 +1,6 @@
 export const generateTitlePrompt = `
-- You will generate a short title based on the first message a user begins a conversation with.
+- You will be given a message from a user.
+- Generate a short title that summarizes the message.
 - Ensure it is not more than 80 characters long.
-- The title should be a summary of the user's message.
 - Do not use quotes or colons.
 `.trim();

@@ -12,7 +12,7 @@ export default function ChatItem({ chat }: { chat: Chat }) {
   return (
     <SidebarMenuItem>
       {pathname === `/chat/${chat.id}` ? (
-        <SidebarMenuButton className="border bg-muted/60">
+        <SidebarMenuButton className="border text-primary">
           <span>{chat.title}</span>
         </SidebarMenuButton>
       ) : (
