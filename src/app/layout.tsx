@@ -11,18 +11,21 @@ export const viewport: Viewport = {
 const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
 const ibmPlexSans = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
 const ibmPlexSerif = IBM_Plex_Serif({
   variable: "--font-ibm-plex-serif",
   subsets: ["latin"],
+  style: ["normal", "italic"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
@@ -47,7 +50,12 @@ export default function RootLayout({
         )}
       >
         {children}
-        <Toaster theme="light" position="bottom-center" richColors />
+        <Toaster
+          theme="light"
+          position="bottom-center"
+          toastOptions={{ className: "font-sans !rounded" }}
+          richColors
+        />
       </body>
     </html>
   );

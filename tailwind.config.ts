@@ -55,10 +55,7 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: {
-          DEFAULT: "hsl(var(--border))",
-          colored: "hsl(var(--border-colored))",
-        },
+        border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         chart: {
           "1": "hsl(var(--chart-1))",

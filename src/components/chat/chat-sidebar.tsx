@@ -25,21 +25,19 @@ export async function ChatSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="flex h-12 justify-center">
-        <h1 className="px-2 font-serif text-xl font-semibold text-primary">
+      <SidebarHeader className="border-b">
+        <h1 className="inline-flex h-8 items-center px-2 font-serif text-2xl italic text-primary">
           Paloma
         </h1>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="overscroll-contain">
         {user ? (
-          <SidebarGroup>
-            <ChatHistory user={user} />
-          </SidebarGroup>
+          <ChatHistory user={user} />
         ) : (
           <SidebarGroup>
-            <SidebarGroupContent className="px-2">
-              <p className="text-sm text-muted-foreground">
+            <SidebarGroupContent className="p-2">
+              <p className="text-sidebar-foreground/50">
                 Login to save and revisit previous chats!
               </p>
             </SidebarGroupContent>
@@ -48,12 +46,12 @@ export async function ChatSidebar() {
       </SidebarContent>
 
       {user && (
-        <SidebarFooter>
+        <SidebarFooter className="border-t">
           <SidebarMenu>
             <SidebarMenuItem>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton className="font-semibold">
+                  <SidebarMenuButton className="font-medium text-primary">
                     <span className="truncate font-serif">{user.email}</span>
                     <ChevronUp className="ml-auto" />
                   </SidebarMenuButton>

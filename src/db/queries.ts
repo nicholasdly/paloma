@@ -1,6 +1,6 @@
 import "server-only";
 import { Message } from "ai";
-import { and, desc, eq, gt } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { db } from ".";
 import { chats, users } from "./schema";
 
@@ -65,19 +65,11 @@ export async function updateChat({
 }
 
 export async function getHistory({ userId }: { userId: string }) {
-  const month = 1000 * 60 * 60 * 24 * 30; // 30 days
-
   const history = await db
     .select()
     .from(chats)
-    .where(
-      and(
-        eq(chats.userId, userId),
-        gt(chats.createdAt, new Date(new Date().getTime() - month)),
-      ),
-    )
+    .where(eq(chats.userId, userId))
     .orderBy(desc(chats.createdAt))
     .limit(100);
-
   return history;
 }

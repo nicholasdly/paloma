@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -12,10 +12,9 @@ const buttonVariants = cva(
           "text-primary-foreground bg-primary hover:bg-primary-active border border-b-3 hover:border-b border-primary-active",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline:
-          "bg-accent/50 hover:bg-accent border border-b-3 hover:border-b",
+        outline: "bg-background hover:bg-accent border text-primary",
         secondary:
-          "text-primary bg-blue-50/60 hover:bg-blue-100/50 border border-b-3 hover:border-b border-blue-100",
+          "text-primary bg-accent hover:bg-accent/50 border border-b-3 hover:border-b",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
