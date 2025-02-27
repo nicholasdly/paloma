@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { memo } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
-import ShikiHighlighter, { rehypeInlineCodeProperty } from "react-shiki";
+import ShikiHighlighter, { isInlineCode } from "react-shiki";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -121,22 +121,27 @@ const components: Partial<Components> = {
       {children}
     </td>
   ),
-  // @ts-expect-error - `inline` is defined by the `rehypeInlineCodeProperty` rehype plugin.
-  code: ({ inline, className, children, ...props }) => {
+  code: ({ node, className, children, ...props }) => {
     const match = className?.match(/language-(\w+)/);
     const language = match ? match[1] : undefined;
 
-    return !inline ? (
+    const isInline = node ? isInlineCode(node) : false;
+
+    return !isInline ? (
       <ShikiHighlighter
         className="rounded border text-sm font-medium shadow-[6px_6px_0_hsla(219,_93%,_42%,_0.06)]"
         language={language}
         theme="github-light"
+        delay={150}
         {...props}
       >
         {String(children)}
       </ShikiHighlighter>
     ) : (
-      <code className="whitespace-pre rounded border bg-accent px-1 py-0.5 font-mono text-sm font-medium text-accent-foreground">
+      <code
+        className="whitespace-pre rounded border bg-accent px-1 py-0.5 font-mono text-sm font-medium text-accent-foreground"
+        {...props}
+      >
         {children}
       </code>
     );
@@ -148,10 +153,7 @@ function PureMarkdown({ children }: { children: string }) {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: false }]]}
-      rehypePlugins={[
-        rehypeInlineCodeProperty,
-        [rehypeKatex, { output: "html" }],
-      ]}
+      rehypePlugins={[[rehypeKatex, { output: "html" }]]}
       components={components}
     >
       {children}
