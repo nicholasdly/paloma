@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, IBM_Plex_Serif } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Lora } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
@@ -22,11 +22,10 @@ const ibmPlexSans = IBM_Plex_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
-const ibmPlexSerif = IBM_Plex_Serif({
-  variable: "--font-ibm-plex-serif",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
   style: ["normal", "italic"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +44,7 @@ export default function RootLayout({
         className={cn(
           ibmPlexSans.variable,
           ibmPlexMono.variable,
-          ibmPlexSerif.variable,
+          lora.variable,
           "overscroll-x-none font-sans antialiased",
         )}
       >

@@ -13,7 +13,7 @@ export default {
       fontFamily: {
         mono: ["var(--font-ibm-plex-mono)", ...fontFamily.mono],
         sans: ["var(--font-ibm-plex-sans)", ...fontFamily.sans],
-        serif: ["var(--font-ibm-plex-serif)", ...fontFamily.serif],
+        serif: ["var(--font-lora)", ...fontFamily.serif],
       },
       borderWidth: {
         "3": "3px",
