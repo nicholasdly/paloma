@@ -9,7 +9,7 @@ export default async function ChatHeader() {
   const { user } = await getCurrentSession();
 
   return (
-    <header className="g-background sticky top-0 flex items-center justify-between border-b bg-background p-2">
+    <header className="sticky top-0 z-10 flex items-center justify-between border-b bg-background p-2">
       <div className="flex items-center gap-2">
         <Tooltip delayDuration={400}>
           <TooltipTrigger asChild>

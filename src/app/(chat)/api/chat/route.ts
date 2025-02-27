@@ -1,6 +1,6 @@
 import { Message, appendResponseMessages, generateText, streamText } from "ai";
 import { createChat, getChat, updateChat } from "@/db/queries";
-import { generateTitlePrompt } from "@/lib/ai/prompts";
+import { generateTitlePrompt, systemPrompt } from "@/lib/ai/prompts";
 import { getCurrentSession } from "@/lib/auth/sessions";
 import { openai } from "@ai-sdk/openai";
 
@@ -52,6 +52,7 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openai("gpt-4o-mini"),
       messages,
+      system: systemPrompt,
     });
 
     return result.toDataStreamResponse();
@@ -62,6 +63,7 @@ export async function POST(req: Request) {
   const result = streamText({
     model: openai("gpt-4o-mini"),
     messages,
+    system: systemPrompt,
     async onFinish({ response }) {
       const chat = await chatPromise;
       const conversation = appendResponseMessages({

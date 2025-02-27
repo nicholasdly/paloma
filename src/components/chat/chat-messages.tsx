@@ -1,4 +1,5 @@
 import { Message, UseChatHelpers } from "@ai-sdk/react";
+import { Markdown } from "../custom/markdown";
 
 export default function ChatMessages({
   messages,
@@ -24,15 +25,15 @@ export default function ChatMessages({
 function UserMessage({ message }: { message: Message }) {
   return (
     <article className="ml-auto max-w-[90%] rounded border bg-accent px-3 py-2 text-primary">
-      <p>{message.content}</p>
+      <p className="whitespace-pre-line">{message.content}</p>
     </article>
   );
 }
 
 function AssistantMessage({ message }: { message: Message }) {
   return (
-    <article className="mr-auto py-2">
-      <p>{message.content}</p>
+    <article className="no-katex-margins mr-auto flex flex-col gap-4 py-2">
+      <Markdown>{message.content}</Markdown>
     </article>
   );
 }

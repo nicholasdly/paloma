@@ -79,3 +79,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .no-katex-margins {
+    span.katex-display {
+      @apply !my-0;
+    }
+  }
+}
