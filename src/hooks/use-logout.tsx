@@ -1,27 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { tc } from "@/lib/utils";
-
-async function logout() {
-  const [response] = await tc(
-    fetch("/api/logout", {
-      method: "DELETE",
-    }),
-  );
-
-  if (response?.ok) {
-    return {
-      success: true as const,
-      error: null,
-    };
-  }
-
-  return {
-    success: false as const,
-    error: "Something went wrong! Try again later.",
-  };
-}
+import { logout } from "@/lib/api";
 
 export function useLogout() {
   const [isPending, startTransition] = useTransition();

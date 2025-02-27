@@ -26,7 +26,7 @@ export async function ChatSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="border-b">
-        <h1 className="inline-flex h-8 items-center px-2 font-serif text-2xl italic text-primary">
+        <h1 className="inline-flex h-8 items-center px-2 font-serif text-2xl font-medium text-primary">
           Paloma
         </h1>
       </SidebarHeader>

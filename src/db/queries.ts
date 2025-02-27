@@ -61,7 +61,26 @@ export async function updateChat({
   id: string;
   messages: Message[];
 }) {
-  await db.update(chats).set({ messages }).where(eq(chats.id, id));
+  const [chat] = await db
+    .update(chats)
+    .set({ messages })
+    .where(eq(chats.id, id))
+    .returning();
+  return chat;
+}
+
+export async function deleteChat({
+  id,
+  userId,
+}: {
+  id: string;
+  userId: string;
+}) {
+  const [chat] = await db
+    .delete(chats)
+    .where(and(eq(chats.id, id), eq(chats.userId, userId)))
+    .returning();
+  return chat;
 }
 
 export async function getHistory({ userId }: { userId: string }) {
