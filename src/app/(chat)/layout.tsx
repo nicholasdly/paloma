@@ -8,7 +8,7 @@ export default function Layout({
   return (
     <SidebarProvider>
       <ChatSidebar />
-      <div className="flex h-svh w-full flex-col">
+      <div className="flex min-h-svh w-full flex-col">
         <ChatHeader />
         {children}
       </div>
