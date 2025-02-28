@@ -1,24 +1,58 @@
-import { getHistory } from "@/db/queries";
-import { User } from "@/db/schema";
+"use client";
+
+import { LoaderIcon } from "lucide-react";
+import { Chat } from "@/db/schema";
 import { groupChats } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { SidebarGroup, SidebarGroupContent, SidebarMenu } from "../ui/sidebar";
 import ChatHistoryItem from "./chat-history-item";
 
-export default async function ChatHistory({ user }: { user: User }) {
-  const history = await getHistory({ userId: user.id });
-  const groups = groupChats(history);
+export default function ChatHistory() {
+  const { data, status } = useQuery<Chat[]>({
+    queryKey: ["history"],
+    queryFn: async () => {
+      const response = await fetch(`/api/chat`);
+      return await response.json();
+    },
+  });
 
-  if (history.length === 0) {
+  if (status === "pending") {
     return (
       <SidebarGroup>
         <SidebarGroupContent>
-          <p className="text-sidebar-foreground/50">
+          <div className="mt-6 flex items-center justify-center text-sidebar-foreground/50">
+            <LoaderIcon className="size-5 animate-spin" />
+          </div>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <p className="px-2 py-1 text-sidebar-foreground/50">
+            Something went wrong! Try again later.
+          </p>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <SidebarGroup>
+        <SidebarGroupContent>
+          <p className="px-2 py-1 text-sidebar-foreground/50">
             Your conversations will appear here once you start chatting!
           </p>
         </SidebarGroupContent>
       </SidebarGroup>
     );
   }
+
+  const groups = groupChats(data);
 
   return (
     <SidebarGroup>

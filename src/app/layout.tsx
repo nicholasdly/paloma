@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans, Lora } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import Providers from "./providers";
 
 export const viewport: Viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
@@ -48,13 +49,15 @@ export default function RootLayout({
           "overscroll-x-none font-sans antialiased",
         )}
       >
-        {children}
-        <Toaster
-          theme="light"
-          position="top-center"
-          toastOptions={{ className: "font-sans !rounded" }}
-          richColors
-        />
+        <Providers>
+          {children}
+          <Toaster
+            theme="light"
+            position="top-center"
+            toastOptions={{ className: "font-sans !rounded" }}
+            richColors
+          />
+        </Providers>
       </body>
     </html>
   );

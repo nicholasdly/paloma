@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { User } from "@/db/schema";
 import { Message, useChat } from "@ai-sdk/react";
+import { useQueryClient } from "@tanstack/react-query";
 import ChatForm from "./chat-form";
 import ChatMessages from "./chat-messages";
 
@@ -16,7 +16,7 @@ export default function Chat({
   initialMessages: Message[];
   user: User | null;
 }) {
-  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     id,
@@ -24,7 +24,10 @@ export default function Chat({
     sendExtraMessageFields: true,
     experimental_throttle: 100,
     generateId: () => crypto.randomUUID(),
-    onFinish: () => user && router.refresh(),
+    onFinish: () => {
+      if (!user) return;
+      queryClient.invalidateQueries({ queryKey: ["history"] });
+    },
     onError: (error) => {
       console.error(error);
       toast.error("An error occurred, please try again.");

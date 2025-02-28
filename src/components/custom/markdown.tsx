@@ -9,38 +9,35 @@ import "katex/dist/katex.min.css";
 
 const components: Partial<Components> = {
   h1: ({ children, ...props }) => (
-    <h1
-      className="mt-4 font-serif text-xl font-semibold text-primary"
-      {...props}
-    >
+    <h1 className="font-serif text-xl font-semibold text-primary" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }) => (
     <h2
-      className="mt-4 font-serif text-lg font-semibold text-primary"
+      className="!mt-8 font-serif text-lg font-semibold text-primary"
       {...props}
     >
       {children}
     </h2>
   ),
   h3: ({ children, ...props }) => (
-    <h3 className="mt-4 font-serif font-semibold text-primary" {...props}>
+    <h3 className="!mt-8 font-serif font-semibold text-primary" {...props}>
       {children}
     </h3>
   ),
   h4: ({ children, ...props }) => (
-    <h4 className="mt-4 font-serif font-semibold text-primary" {...props}>
+    <h4 className="!mt-8 font-serif font-semibold text-primary" {...props}>
       {children}
     </h4>
   ),
   h5: ({ children, ...props }) => (
-    <h5 className="mt-4 font-serif font-semibold text-primary" {...props}>
+    <h5 className="!mt-8 font-serif font-semibold text-primary" {...props}>
       {children}
     </h5>
   ),
   h6: ({ children, ...props }) => (
-    <h6 className="mt-4 font-serif font-semibold text-primary" {...props}>
+    <h6 className="!mt-8 font-serif font-semibold text-primary" {...props}>
       {children}
     </h6>
   ),
@@ -129,7 +126,7 @@ const components: Partial<Components> = {
 
     return !isInline ? (
       <ShikiHighlighter
-        className="rounded border text-sm font-medium shadow-[6px_6px_0_hsla(219,_93%,_42%,_0.06)]"
+        className="mt-4 rounded border text-sm font-medium shadow-[6px_6px_0_hsla(219,_93%,_42%,_0.06)]"
         language={language}
         theme="github-light"
         delay={150}
