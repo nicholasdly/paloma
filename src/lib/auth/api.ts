@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { loginFormSchema, registerFormSchema } from "./auth/schemas";
-import { tc } from "./utils";
+import { tc } from "../utils";
+import { loginFormSchema, registerFormSchema } from "./schemas";
 
 export async function register(values: z.infer<typeof registerFormSchema>) {
   const [response] = await tc(
@@ -15,6 +15,13 @@ export async function register(values: z.infer<typeof registerFormSchema>) {
     return {
       success: true as const,
       error: null,
+    };
+  }
+
+  if (response?.status === 429) {
+    return {
+      success: false as const,
+      error: "Too many requests! Try again later.",
     };
   }
 
@@ -47,6 +54,13 @@ export async function login(values: z.infer<typeof loginFormSchema>) {
     };
   }
 
+  if (response?.status === 429) {
+    return {
+      success: false as const,
+      error: "Too many requests! Try again later.",
+    };
+  }
+
   if (response?.status === 401) {
     return {
       success: false as const,
@@ -74,23 +88,10 @@ export async function logout() {
     };
   }
 
-  return {
-    success: false as const,
-    error: "Something went wrong! Try again later.",
-  };
-}
-
-export async function deleteChat(id: string) {
-  const [response] = await tc(
-    fetch(`/api/chat/${id}`, {
-      method: "DELETE",
-    }),
-  );
-
-  if (response?.ok) {
+  if (response?.status === 429) {
     return {
-      success: true as const,
-      error: null,
+      success: false as const,
+      error: "Too many requests! Try again later.",
     };
   }
 
