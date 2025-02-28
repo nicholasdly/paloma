@@ -1,5 +1,6 @@
 import { Message, UseChatHelpers } from "@ai-sdk/react";
 import { Markdown } from "../custom/markdown";
+import ChatWelcome from "./chat-welcome";
 
 export default function ChatMessages({
   messages,
@@ -8,6 +9,8 @@ export default function ChatMessages({
 }) {
   return (
     <div className="mx-auto flex w-full flex-1 flex-col gap-6 px-6 py-4 md:max-w-3xl">
+      {messages.length === 0 && <ChatWelcome />}
+
       {messages.map((message) => {
         switch (message.role) {
           case "user":
