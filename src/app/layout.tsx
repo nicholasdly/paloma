@@ -30,8 +30,8 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "nicholasdly/starter",
-  description: "A minimal starter kit for Next.js.",
+  title: "Paloma",
+  description: "A chatbot built using Next.js and the AI SDK by Vercel.",
 };
 
 export default function RootLayout({
