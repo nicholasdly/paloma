@@ -2,11 +2,11 @@
 
 import { EllipsisVerticalIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Chat } from "@/db/schema";
-import { deleteChat } from "@/lib/api";
+import { tc } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,20 +38,17 @@ function ChatHistoryItemActions({
   showOnHover: boolean;
 }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [, startTransition] = useTransition();
-  const router = useRouter();
 
-  const onSelect = () => {
-    startTransition(async () => {
-      const { success, error } = await deleteChat(id);
-      if (success) {
-        router.refresh();
-        toast.success("Successfully deleted chat!");
-      } else {
-        toast.error(error);
+  const { mutate: deleteChat, isPending } = useMutation({
+    mutationFn: async () => {
+      const [response] = await tc(
+        fetch(`/api/chat/${id}`, { method: "DELETE" }),
+      );
+      if (!response?.ok) {
+        throw new Error("Something went wrong! Try again later.");
       }
-    });
-  };
+    },
+  });
 
   return (
     <>
@@ -69,6 +66,7 @@ function ChatHistoryItemActions({
           <DropdownMenuItem
             className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive"
             onSelect={() => setShowDeleteDialog(true)}
+            disabled={isPending}
           >
             <TrashIcon />
             <span>Delete</span>
@@ -86,7 +84,7 @@ function ChatHistoryItemActions({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onSelect}>
+            <AlertDialogAction onClick={() => deleteChat()}>
               Delete chat
             </AlertDialogAction>
           </AlertDialogFooter>

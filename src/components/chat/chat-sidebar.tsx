@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { getCurrentSession } from "@/lib/auth/sessions";
+import { HydrationBoundary } from "@tanstack/react-query";
 import HelpButton from "../custom/help-button";
 import LogoutButton from "../custom/logout-button";
 import {
@@ -37,7 +38,9 @@ export async function ChatSidebar() {
 
       <SidebarContent className="overscroll-contain">
         {user ? (
-          <ChatHistory user={user} />
+          <HydrationBoundary>
+            <ChatHistory user={user} />
+          </HydrationBoundary>
         ) : (
           <SidebarGroup>
             <SidebarGroupContent className="p-2">
