@@ -95,8 +95,7 @@ export async function GET() {
     })
     .from(chats)
     .where(eq(chats.userId, user.id))
-    .orderBy(desc(chats.createdAt))
-    .limit(100);
+    .orderBy(desc(chats.createdAt));
 
   return new Response(JSON.stringify(history), { status: 200 });
 }

@@ -1,24 +1,18 @@
 "use client";
 
 import { LoaderIcon } from "lucide-react";
-import { Chat, User } from "@/db/schema";
-import { groupChats, tc } from "@/lib/utils";
+import { Chat } from "@/db/schema";
+import { groupChats } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { SidebarGroup, SidebarGroupContent, SidebarMenu } from "../ui/sidebar";
 import ChatHistoryItem from "./chat-history-item";
 
-async function getHistory(): Promise<Chat[]> {
-  const response = await fetch(`/api/chat`);
-  return await response.json();
-}
-
-export default function ChatHistory({ user }: { user: User }) {
-  const { data, status } = useQuery({
-    queryKey: ["history", user.id],
+export default function ChatHistory() {
+  const { data, status } = useQuery<Chat[]>({
+    queryKey: ["history"],
     queryFn: async () => {
-      const [response, error] = await tc(getHistory());
-      if (error) throw new Error("Something went wrong! Try again later.");
-      return response;
+      const response = await fetch(`/api/chat`);
+      return await response.json();
     },
   });
 
@@ -26,7 +20,7 @@ export default function ChatHistory({ user }: { user: User }) {
     return (
       <SidebarGroup>
         <SidebarGroupContent>
-          <div className="mt-2 flex items-center justify-center text-sidebar-foreground/50">
+          <div className="mt-6 flex items-center justify-center text-sidebar-foreground/50">
             <LoaderIcon className="size-5 animate-spin" />
           </div>
         </SidebarGroupContent>

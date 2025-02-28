@@ -26,7 +26,7 @@ export default function Chat({
     generateId: () => crypto.randomUUID(),
     onFinish: () => {
       if (!user) return;
-      queryClient.invalidateQueries({ queryKey: ["history", user.id] });
+      queryClient.invalidateQueries({ queryKey: ["history"] });
     },
     onError: (error) => {
       console.error(error);

@@ -39,7 +39,7 @@ export async function ChatSidebar() {
       <SidebarContent className="overscroll-contain">
         {user ? (
           <HydrationBoundary>
-            <ChatHistory user={user} />
+            <ChatHistory />
           </HydrationBoundary>
         ) : (
           <SidebarGroup>

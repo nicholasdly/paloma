@@ -32,7 +32,7 @@ function UserMessage({ message }: { message: Message }) {
 
 function AssistantMessage({ message }: { message: Message }) {
   return (
-    <article className="no-katex-margins mr-auto flex max-w-full flex-col gap-4 py-2">
+    <article className="mr-auto max-w-full space-y-4 py-2">
       <Markdown>{message.content}</Markdown>
     </article>
   );
