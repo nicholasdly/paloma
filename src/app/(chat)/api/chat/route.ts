@@ -5,12 +5,19 @@ import { createChat, getChat, updateChat } from "@/db/queries";
 import { chats } from "@/db/schema";
 import { generateTitlePrompt, systemPrompt } from "@/lib/ai/prompts";
 import { getCurrentSession } from "@/lib/auth/sessions";
+import { redis } from "@/lib/redis";
 import { openai } from "@ai-sdk/openai";
+import { Ratelimit } from "@upstash/ratelimit";
 
 type ChatRequestBody = {
   id: string;
   messages: Message[];
 };
+
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(20, "1 d"),
+});
 
 async function generateTitle({ message }: { message: Message }) {
   const { text: title } = await generateText({
@@ -40,16 +47,18 @@ async function saveChat({
 }
 
 export async function POST(req: Request) {
-  // TODO: Implement rate limiting
-
   const { id, messages }: ChatRequestBody = await req.json();
 
   const prompt = messages.at(-1);
   if (!prompt || prompt.role !== "user") {
-    return new Response(null, { status: 400 });
+    return new Response("TOO_MANY_REQUESTS", { status: 429 });
   }
 
   const { user } = await getCurrentSession();
+
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const { success: allow } = await ratelimit.limit(user?.id ?? ip);
+  if (!allow) return new Response(null, { status: 429 });
 
   if (!user) {
     const result = streamText({

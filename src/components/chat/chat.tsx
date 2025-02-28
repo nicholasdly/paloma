@@ -24,13 +24,15 @@ export default function Chat({
     sendExtraMessageFields: true,
     experimental_throttle: 100,
     generateId: () => crypto.randomUUID(),
+    onResponse: (response) => {
+      if (response.ok) return;
+      return response.status === 429
+        ? void toast.error("Too many requests! Try again later.")
+        : void toast.error("An error occurred, please try again.");
+    },
     onFinish: () => {
       if (!user) return;
       queryClient.invalidateQueries({ queryKey: ["history"] });
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error("An error occurred, please try again.");
     },
   });
 

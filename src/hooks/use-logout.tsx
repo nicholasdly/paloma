@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
-import { logout } from "@/lib/api";
+import { logout } from "@/lib/auth/api";
 
 export function useLogout() {
   const [isPending, startTransition] = useTransition();

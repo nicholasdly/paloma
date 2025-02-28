@@ -8,9 +8,18 @@ import {
   invalidateExpiredSessions,
   setSessionTokenCookie,
 } from "@/lib/auth/sessions";
+import { redis } from "@/lib/redis";
+import { Ratelimit } from "@upstash/ratelimit";
+
+const ratelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(10, "10 m"),
+});
 
 export async function POST(request: Request) {
-  // TODO: Implement rate limiting
+  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+  const { success: allow } = await ratelimit.limit(ip);
+  if (!allow) return new Response(null, { status: 429 });
 
   const { session: currentSession } = await getCurrentSession();
   if (currentSession) return new Response(null, { status: 403 });

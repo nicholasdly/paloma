@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
-import { register } from "@/lib/api";
+import { register } from "@/lib/auth/api";
 import { registerFormSchema } from "@/lib/auth/schemas";
 
 export function useRegister() {
