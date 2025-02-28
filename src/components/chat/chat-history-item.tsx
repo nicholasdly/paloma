@@ -32,9 +32,11 @@ import {
 
 function ChatHistoryItemActions({
   id,
+  userId,
   showOnHover,
 }: {
   id: string;
+  userId: string;
   showOnHover: boolean;
 }) {
   const router = useRouter();
@@ -53,7 +55,7 @@ function ChatHistoryItemActions({
       toast.error("Something went wrong! Try again later.", { id: context });
     },
     onSuccess: (_data, _variables, context) => {
-      queryClient.invalidateQueries({ queryKey: ["history"] });
+      queryClient.invalidateQueries({ queryKey: ["history", userId] });
       toast.success("Successfully deleted chat.", { id: context });
       if (!showOnHover) router.refresh();
     },
@@ -103,7 +105,13 @@ function ChatHistoryItemActions({
   );
 }
 
-export default function ChatHistoryItem({ chat }: { chat: Chat }) {
+export default function ChatHistoryItem({
+  userId,
+  chat,
+}: {
+  userId: string;
+  chat: Chat;
+}) {
   const { setOpenMobile } = useSidebar();
 
   const pathname = usePathname();
@@ -122,7 +130,11 @@ export default function ChatHistoryItem({ chat }: { chat: Chat }) {
           </Link>
         </SidebarMenuButton>
       )}
-      <ChatHistoryItemActions id={chat.id} showOnHover={!isActive} />
+      <ChatHistoryItemActions
+        id={chat.id}
+        userId={userId}
+        showOnHover={!isActive}
+      />
     </SidebarMenuItem>
   );
 }

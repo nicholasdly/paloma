@@ -32,7 +32,7 @@ export default function Chat({
     },
     onFinish: () => {
       if (!user) return;
-      queryClient.invalidateQueries({ queryKey: ["history"] });
+      queryClient.invalidateQueries({ queryKey: ["history", user.id] });
     },
   });
 

@@ -1,15 +1,15 @@
 "use client";
 
 import { LoaderIcon } from "lucide-react";
-import { Chat } from "@/db/schema";
+import { Chat, User } from "@/db/schema";
 import { groupChats } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { SidebarGroup, SidebarGroupContent, SidebarMenu } from "../ui/sidebar";
 import ChatHistoryItem from "./chat-history-item";
 
-export default function ChatHistory() {
+export default function ChatHistory({ user }: { user: User }) {
   const { data, status } = useQuery<Chat[]>({
-    queryKey: ["history"],
+    queryKey: ["history", user.id],
     queryFn: async () => {
       const response = await fetch(`/api/chat`);
       return await response.json();
@@ -63,7 +63,7 @@ export default function ChatHistory() {
               Today
             </div>
             {groups.today.map((chat) => (
-              <ChatHistoryItem key={chat.id} chat={chat} />
+              <ChatHistoryItem key={chat.id} userId={user.id} chat={chat} />
             ))}
           </SidebarMenu>
         )}
@@ -74,7 +74,7 @@ export default function ChatHistory() {
               Yesterday
             </div>
             {groups.yesterday.map((chat) => (
-              <ChatHistoryItem key={chat.id} chat={chat} />
+              <ChatHistoryItem key={chat.id} userId={user.id} chat={chat} />
             ))}
           </SidebarMenu>
         )}
@@ -85,7 +85,7 @@ export default function ChatHistory() {
               Previous 7 days
             </div>
             {groups.week.map((chat) => (
-              <ChatHistoryItem key={chat.id} chat={chat} />
+              <ChatHistoryItem key={chat.id} userId={user.id} chat={chat} />
             ))}
           </SidebarMenu>
         )}
@@ -96,7 +96,7 @@ export default function ChatHistory() {
               Previous 30 days
             </div>
             {groups.month.map((chat) => (
-              <ChatHistoryItem key={chat.id} chat={chat} />
+              <ChatHistoryItem key={chat.id} userId={user.id} chat={chat} />
             ))}
           </SidebarMenu>
         )}
@@ -107,7 +107,7 @@ export default function ChatHistory() {
               Older
             </div>
             {groups.older.map((chat) => (
-              <ChatHistoryItem key={chat.id} chat={chat} />
+              <ChatHistoryItem key={chat.id} userId={user.id} chat={chat} />
             ))}
           </SidebarMenu>
         )}
