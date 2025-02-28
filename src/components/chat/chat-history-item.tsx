@@ -55,7 +55,7 @@ function ChatHistoryItemActions({
     onSuccess: (_data, _variables, context) => {
       queryClient.invalidateQueries({ queryKey: ["history"] });
       toast.success("Successfully deleted chat.", { id: context });
-      if (!showOnHover) router.push("/");
+      if (!showOnHover) router.refresh();
     },
   });
 
