@@ -13,7 +13,7 @@ export function useLogin() {
     startTransition(async () => {
       const { success, error } = await login(values);
       if (success) {
-        router.push("/");
+        router.refresh();
       } else {
         toast.error(error);
       }

@@ -13,7 +13,7 @@ export function useRegister() {
     startTransition(async () => {
       const { success, error } = await register(values);
       if (success) {
-        router.push("/");
+        router.refresh();
       } else {
         toast.error(error);
       }
