@@ -3,7 +3,10 @@ import { db } from "@/db";
 import { chats } from "@/db/schema";
 import { getCurrentSession } from "@/lib/auth/sessions";
 
-export async function GET({ params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { id } = await params;
 
   const { user } = await getCurrentSession();
@@ -23,7 +26,10 @@ export async function GET({ params }: { params: Promise<{ id: string }> }) {
     : new Response(null, { status: 404 });
 }
 
-export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(
+  _: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
   const { id } = await params;
 
   const { user } = await getCurrentSession();

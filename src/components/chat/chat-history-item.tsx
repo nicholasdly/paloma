@@ -2,11 +2,11 @@
 
 import { EllipsisVerticalIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import { Chat } from "@/db/schema";
-import { tc } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,16 +37,25 @@ function ChatHistoryItemActions({
   id: string;
   showOnHover: boolean;
 }) {
+  const router = useRouter();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
+  const queryClient = useQueryClient();
   const { mutate: deleteChat, isPending } = useMutation({
     mutationFn: async () => {
-      const [response] = await tc(
-        fetch(`/api/chat/${id}`, { method: "DELETE" }),
-      );
-      if (!response?.ok) {
-        throw new Error("Something went wrong! Try again later.");
-      }
+      const response = await fetch(`/api/chat/${id}`, { method: "DELETE" });
+      return await response.json();
+    },
+    onMutate: () => {
+      return toast.loading("Deleting chat...");
+    },
+    onError: (_error, _variables, context) => {
+      toast.error("Something went wrong! Try again later.", { id: context });
+    },
+    onSuccess: (_data, _variables, context) => {
+      queryClient.invalidateQueries({ queryKey: ["history"] });
+      toast.success("Successfully deleted chat.", { id: context });
+      if (!showOnHover) router.push("/");
     },
   });
 
