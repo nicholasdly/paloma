@@ -7,7 +7,7 @@ export default function ChatMessages({
   messages: UseChatHelpers["messages"];
 }) {
   return (
-    <div className="mx-auto flex w-full flex-1 flex-col gap-6 px-5 py-4 md:max-w-3xl">
+    <div className="mx-auto flex w-full flex-1 flex-col gap-6 px-6 py-4 md:max-w-3xl">
       {messages.map((message) => {
         switch (message.role) {
           case "user":
@@ -32,7 +32,7 @@ function UserMessage({ message }: { message: Message }) {
 
 function AssistantMessage({ message }: { message: Message }) {
   return (
-    <article className="no-katex-margins mr-auto flex flex-col gap-4 py-2">
+    <article className="no-katex-margins mr-auto flex max-w-full flex-col gap-4 py-2">
       <Markdown>{message.content}</Markdown>
     </article>
   );
